@@ -1,0 +1,41 @@
+doctype 5
+html
+  head
+    title Project Tracker
+    = stylesheet_link_tag "application", :media => "all"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+  body
+    - if user_signed_in?
+      .navbar.navbar-inverse.navbar-fixed-top
+        .navbar-inner
+          .container
+            a.brand href="#{root_url}" ProjectTracker
+            .nav-collapse.collapse.navbar-responsive-collapse
+              ul.nav
+                li.active
+                  a Home
+                li
+                  a href="#" About Me
+              ul.nav.pull-right
+                li
+                  a href="#"
+                    = current_user.email
+                li.divider-vertical
+                li= link_to "Sign out", '/home/user_signout' 
+
+    .container
+      = yield
+
+    #myModal.modal.hide.fade tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+      .modal-header
+        button type="button" class="close" data-dismiss="modal" aria-hidden="true" ×
+        h3#myModalLabel Share Project with Clients
+      .modal-body
+        = hidden_field_tag 'project_id'
+        label Invitations
+        = text_field_tag 'invitations'
+        p.text-error Please type multiple comma (,) separated emails
+      .modal-footer
+        button.btn.close-button data-dismiss="modal" aria-hidden="true" Close
+        button.btn.btn-primary#save-button Invite

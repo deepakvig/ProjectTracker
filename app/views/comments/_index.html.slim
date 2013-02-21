@@ -1,0 +1,13 @@
+h3 Comments
+
+.comment
+  - comments.each do |comment|
+    = render 'comments/comment', :comment => comment
+
+br
+b Add Comment
+#add-comment
+  = hidden_field_tag 'feature_id', feature.id
+  = text_area_tag 'new_comment'
+  .save-button
+    button id='save-comment' Save

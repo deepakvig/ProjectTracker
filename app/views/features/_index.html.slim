@@ -1,0 +1,34 @@
+- if can? :read, @project.features.build
+  - features = @project.features.reject(&:new_record?)
+  h1 Listing features
+
+  table.table.table-bordered
+    tr
+      th Title
+      th Description
+      th User
+      th Priority
+      th
+    - feature_priority = ["Mandatory","Desirable","Optional","Future Enhancement"]
+    - features.each do |feature|
+      tr class="#{'success' if !feature.not_accepted? }"
+        /="#{feature_priority[feature.priority-1] if feature.priority}"
+        td = feature.title
+        td = feature.description
+        td = feature.user.try(:email)
+        td = feature_priority[feature.priority-1]
+        td
+           - if not feature.accepted && feature.accepted == "yes" 
+             = link_to 'Show', [@project, feature], class: 'btn' if can? :read, feature
+             '&nbsp;
+           - if feature.status && feature.status == "1" && feature.not_accepted? && ( current_user.tracking_projects.include?(feature.project) || current_user.role?(:admin))
+             = link_to 'Accept', mark_accepted_project_feature_path(@project, feature), class: 'btn' , remote: true, :data => { :featureid => feature.id }
+             '&nbsp;
+           - if not feature.accepted && feature.accepted == "yes" 
+             = link_to 'Edit', edit_project_feature_path(@project, feature), class: 'btn btn-primary' if can? :update, feature
+             '&nbsp;
+             = link_to 'Destroy', [@project, feature], :confirm => 'Are you sure?', :method => :delete, class: 'btn btn-danger' if can? :destroy, feature
+
+  br
+  - if can? :create, @project.features.build
+    = link_to 'New Feature', new_project_feature_path(@project), class: 'btn'

@@ -1,0 +1,21 @@
+- if can? :read, @project
+  p#notice = notice
+
+  h2.center-text
+    = @project.title.capitalize
+  pre
+    p
+      = @project.description
+  p 
+    'Invitations sent to: 
+    b = @project.invitations.map(&:email).join(', ')
+
+  .pull-right
+    = link_to 'Edit', edit_project_path(@project), :class => 'btn btn-primary' if can? :update, @project
+    '&nbsp;
+    = link_to 'Back', projects_path, :class => 'btn'
+
+  br
+
+  - if can? :read, @project
+    = render 'features/index', :project => @project

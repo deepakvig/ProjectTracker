@@ -1,0 +1,51 @@
+- if can? :read, @project
+  - feature_priority = ['Mandatory', 'Desirable', 'Optional', 'Future Enhancement']
+  - feature_priority_class = ['text-error', 'text-warning', 'text-info', 'text-success']
+  p#notice = notice
+
+  h2
+    = @feature.title
+  pre
+    p
+      = @feature.description
+  p
+    'Priority:
+    b class="#{feature_priority_class[@feature.priority-1]}"
+      = feature_priority[@feature.priority-1]
+  p
+    'Requested By:
+    b
+      = @feature.user.try(:email)
+  p
+    'Project :
+    b
+      = link_to @feature.project.try(:title), project_path(@project)
+
+  .pull-right
+    = link_to 'Edit', edit_project_feature_path(@project, @feature), class: 'btn' if can? :update, @feature
+    '&nbsp;
+    = link_to 'Back', project_path(@project), class: 'btn'
+
+  br
+
+  - if @feature.feature_histories.count > 0
+    h4 History :
+    .tabbable.tabs-left
+      ul.nav.nav-tabs
+        - @feature.feature_histories.each_with_index do |history, i|
+          li class="#{'active' if i == 0 }"
+            a data-toggle="tab" href="#history-#{history.id}" 
+              = "Version #{i+1}"
+      ul.tab-content
+        - @feature.feature_histories.each_with_index do |history, i|
+          div id="history-#{history.id}" class="tab-pane #{'active' if i == 0}"
+            p = "Title : #{history.title}"
+            p = "Description : #{history.description}"
+            p = "Priority : #{feature_priority[history.priority-1]}"
+            p = "Status : #{history.status && history.status == "1" ? 'Complete' : 'Incomplete' }"
+            p = "By : #{history.user.try(:email)}"
+            p = "At : #{history.updated_at.strftime("%Y-%m-%d %H:%M:%S UTC")}"
+
+  br
+  - if can? :read, @feature
+    = render 'comments/index', :feature => @feature, :comments => @feature.comments

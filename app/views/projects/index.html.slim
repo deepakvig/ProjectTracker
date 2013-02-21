@@ -1,0 +1,59 @@
+h1 My Projects
+
+- if current_user.projects.size > 0 || current_user.role?(:admin)
+  table.table.table-bordered
+    tr
+      th Title
+      th Description
+      th
+
+    - @projects.each do |project|
+      - if can? :read, project
+        tr
+          td 
+            h4 = project.title
+          td 
+            = project.description
+          td
+            = link_to 'Show', project, :class => 'btn' if can? :read, project
+            '&nbsp;
+            = link_to 'Invite', "#", :class => "btn invite-btn", :data => { :project => project.id } if can? :update, project
+            '&nbsp;
+            = link_to 'Edit', edit_project_path(project), :class => "btn btn-primary" if can? :update, project
+            '&nbsp;
+            = link_to 'Destroy', project, :confirm => 'Are you sure?', :method => :delete, :class => "btn btn-danger" if can? :destroy, project
+- else
+  h3 No Projects found 
+
+br
+
+= link_to 'New Project', new_project_path, :class => "btn"
+
+hr
+
+- tracking_projects = current_user.tracking_projects
+- if tracking_projects.size > 0
+  h1 My Tracking Projects
+ 
+  table.table.table-bordered
+    tr
+      th Title
+      th Description
+      th
+
+    - tracking_projects.each do |project|
+      - if can? :read, project
+        tr
+          td
+            h4 = project.title
+          td
+            = project.description
+          td
+            = link_to 'Show', project, :class => 'btn' if can? :read, project
+            '&nbsp;
+            = link_to 'Invite', "#", :class => "btn invite-btn", :data => { :project => project.id } if can? :update, project
+            '&nbsp;
+            = link_to 'Edit', edit_project_path(project), :class => "btn btn-primary" if can? :update, project
+            '&nbsp;
+            = link_to 'Destroy', project, :confirm => 'Are you sure?', :method => :delete, :class => "btn btn-danger" if can? :destroy, project
+  

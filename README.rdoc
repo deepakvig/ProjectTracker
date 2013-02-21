@@ -1,0 +1,25 @@
+Project Tracker
+  Website: http://obscure-plains-3745.herokuapp.com
+
+
+Website has a user (Admin)
+  username : admin@example.com
+  password : abcd1234
+
+Admin will have access to all the projects
+
+
+Any user can sign up (as developer by default) and create Projects.
+He can add features to the project that he is tracking.
+He can invite client by clicking invite button and typing emails of client.
+Once Developer thinks that the work for a particular feature is done, he can mark it as completed.
+
+
+Client can sign up and check the features in the projects that he is tracking.
+
+
+Both Developer and Client can add comment to the features
+
+If a feature is marked as completed then Client can accept the feature
+
+

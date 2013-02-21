@@ -1,0 +1,29 @@
+= form_for [@project, @feature], html: { class: 'form-horizontal'} do |f|
+  - if @feature.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@feature.errors.count, "error")} prohibited this feature from being saved:"
+      ul
+        - @feature.errors.full_messages.each do |message|
+          li = message
+
+  .field.control-group
+    = f.label :title, :class => 'control-label'
+    .controls
+      = f.text_field :title
+  .field.control-group
+    = f.label :description, :class => 'control-label'
+    .controls
+      = f.text_area :description, rows: '10'
+  .field.control-group
+    .controls
+      label.checkbox
+        = f.check_box :status
+        'Complete
+  .field.control-group
+    = f.label :priority, :class => 'control-label'
+    .controls
+      = f.select :priority, [['Mandatory',1],['Desirable',2],['Optional',3],['Future Enhancement',4]]
+  .actions.control-group 
+    .controls = f.submit 'Save', class: 'btn'
+
+

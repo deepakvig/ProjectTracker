@@ -1,0 +1,10 @@
+.description
+  = comment.description
+b.comment-by
+  'By:
+  = comment.user.try(:email)
+  /= link_to 'Show', comment
+  /= link_to 'Edit', edit_comment_path(comment)
+  /= link_to 'Destroy', comment, :confirm => 'Are you sure?', :method => :delete
+
+hr
